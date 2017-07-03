@@ -15,7 +15,15 @@ namespace AutoClick
         public hezhu()
         {
             InitializeComponent();
+            trackBarTime.Value = trackBarTime.Maximum / 2;
+            textBoxTime.Text = trackBarTime.Value.ToString();
+            KeyBegin(this.Handle, 100, Keys.F7, KeyBeginCallBack);
+            
+        }
 
+        private void trackBarTime_Scroll(object sender, EventArgs e)
+        {
+            textBoxTime.Text = trackBarTime.Value.ToString();
         }
 
 
