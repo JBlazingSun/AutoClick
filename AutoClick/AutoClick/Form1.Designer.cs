@@ -38,7 +38,7 @@
             // 
             this.LogText.Location = new System.Drawing.Point(12, 82);
             this.LogText.Name = "LogText";
-            this.LogText.Size = new System.Drawing.Size(404, 487);
+            this.LogText.Size = new System.Drawing.Size(404, 142);
             this.LogText.TabIndex = 1;
             this.LogText.Text = "";
             // 
@@ -66,7 +66,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(428, 581);
+            this.ClientSize = new System.Drawing.Size(428, 247);
             this.Controls.Add(this.textBoxTime);
             this.Controls.Add(this.trackBarTime);
             this.Controls.Add(this.LogText);
@@ -74,7 +74,8 @@
             this.MaximizeBox = false;
             this.Name = "hezhu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "贺猪自动点击";
+            this.Text = "贺猪专用";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.hezhu_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.trackBarTime)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

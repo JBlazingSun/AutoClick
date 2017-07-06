@@ -11,33 +11,46 @@ namespace AutoClick
 {
     partial class hezhu
     {
+        static Timer myTimer = new Timer();
+        static bool exitFlag = false;
         [DllImport("user32")]
-        public static extern bool RegisterHotKey(IntPtr hWnd, int id, uint control, Keys vk, HotKeyCallBackHanlder callBack);
-        //注册热键的api 
-        [DllImport("user32")]
-        public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-        int keyid = 10;     //区分不同的快捷键
-        Dictionary<int, HotKeyCallBackHanlder> keymap = new Dictionary<int, HotKeyCallBackHanlder>();   //每一个key对于一个处理函数
-        public delegate void HotKeyCallBackHanlder();
+        private static extern int mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
+        const int MOUSEEVENTF_LEFTDOWN = 0x0002; //模拟鼠标左键按下
+        const int MOUSEEVENTF_LEFTUP = 0x0004; //模拟鼠标左键抬起
+        const int MOUSEEVENTF_RIGHTDOWN = 0x0008; //模拟鼠标右键按下
+        const int MOUSEEVENTF_RIGHTUP = 0x0010; //模拟鼠标右键抬起
+        const int MOUSEEVENTF_MIDDLEDOWN = 0x0020; //模拟鼠标中键按下
+        const int MOUSEEVENTF_MIDDLEUP = 0x0040; //模拟鼠标中键抬起
 
         void MyLog(string log)
         {
-            LogText.AppendText("log" + "\n");
+            LogText.AppendText(/*DateTime.Now.ToString()*/ log + Environment.NewLine);
         }
 
-        public void KeyBegin(IntPtr hWnd, uint modifiers, Keys vk, HotKeyCallBackHanlder callBack)
+        void TimerEventProcessor(Object myObject,EventArgs myEventArgs)
         {
-            int id = keyid++;
-            if (!RegisterHotKey(hWnd, id, modifiers, vk, callBack))
-                MyLog("开始热键注册失败");
-            else
-                MyLog("开始热键注册成功");
-            keymap[id] = callBack;
+            myTimer.Interval = trackBarTime.Value;
+            if (exitFlag)
+            {
+                myTimer.Tick -= TimerEventProcessor;
+                myTimer.Stop();
+            }
+            //MyLog("");
+            leftBtn();
+            LogText.ScrollToCaret();
         }
 
-        public void KeyBeginCallBack()
+        public void MyTimer()
         {
-            MessageBox.Show("KeyBeginCallBack");
+            exitFlag = false;
+            myTimer.Tick += new EventHandler(TimerEventProcessor);
+            myTimer.Interval = trackBarTime.Value;
+            myTimer.Start();
+        }
+
+        public void leftBtn()
+        {
+            mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
         }
     }
 }
